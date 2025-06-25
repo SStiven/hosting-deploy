@@ -155,7 +155,7 @@ $ az acr credential show --name mywebapp1acr --query username -o tsv
 $ az acr credential show --name mywebapp1acr --query "passwords[0].value" -o tsv
 >>> xEZO7_____________________
 
-$ az webapp config container set --name webappcontainerdemo001 --resource-group MyWebApp1 --container-registry-url https://mywebapp1acr.azurecr.io --container-registry-user mywebapp1acr --container-registry-password xEZO7g1Obcwj3lGsN/Lsy3z76j58i+GJBkHlEfp+1f+ACRCJPNQ+
+$ az webapp config container set --name webappcontainerdemo001 --resource-group MyWebApp1 --container-registry-url https://mywebapp1acr.azurecr.io --container-registry-user mywe_____________________ --container-registry-password xEZO7_____________________
 $ az webapp browse --resource-group MyWebApp1 --name webappcontainerdemo001
 ```
 
