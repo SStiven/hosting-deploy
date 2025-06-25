@@ -150,12 +150,12 @@ $ >az appservice plan create --resource-group MyWebApp1 --name MyWebApp1Plan --i
 $ az webapp create --resource-group MyWebApp1 --plan MyWebApp1Plan --name webappcontainerdemo001 --container-image-name mywebapp1acr.azurecr.io/webappdocker:latest
 
 $ az acr credential show --name mywebapp1acr --query username -o tsv
->>> myweba_____________________
+>>> _____________________
 
 $ az acr credential show --name mywebapp1acr --query "passwords[0].value" -o tsv
->>> xEZO7_____________________
+>>> _____________________
 
-$ az webapp config container set --name webappcontainerdemo001 --resource-group MyWebApp1 --container-registry-url https://mywebapp1acr.azurecr.io --container-registry-user mywe_____________________ --container-registry-password xEZO7_____________________
+$ az webapp config container set --name webappcontainerdemo001 --resource-group MyWebApp1 --container-registry-url https://mywebapp1acr.azurecr.io --container-registry-user _____________________ --container-registry-password _____________________
 $ az webapp browse --resource-group MyWebApp1 --name webappcontainerdemo001
 ```
 
