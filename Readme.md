@@ -98,3 +98,67 @@ $ az webapp browse --resource-group WebApp1 --name webapp112345667
 ![alt text](./002.2-deploy-azure-cli/203-deployed.png)
 
 ![alt text](./002.2-deploy-azure-cli/203-end.png)
+
+## 3 Via Azure CLI
+
+We will be using the following Dockerfile
+
+```Dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+COPY ["WebApplication1.csproj", "./"]
+RUN dotnet restore "./WebApplication1.csproj"
+
+COPY . .
+RUN dotnet publish -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+WORKDIR /app
+
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 80
+
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "WebApplication1.dll"]
+```
+
+Now we create the needed resources
+
+### Provision ACR
+
+```bash
+$ az group create --name MyWebApp1 --location "Canada Central"
+$ az acr create --resource-group MyWebApp1 --name mywebapp1acr --sku Basic
+$ az acr update --name mywebapp1acr --admin-enabled true
+$ az acr login --name mywebapp1acr
+```
+
+### Build, tag & push your Docker image to ACR
+
+```bash
+$ docker build -t webappdocker:latest .  
+$ docker tag webappdocker:latest mywebapp1acr.azurecr.io/webappdocker:latest
+$ docker push mywebapp1acr.azurecr.io/webappdocker:latest
+```
+
+### Create App Service Plan and Web App (container)
+We use S1 to enable SSD usage, otherwise, this process will be very slow.
+
+```bash
+$ >az appservice plan create --resource-group MyWebApp1 --name MyWebApp1Plan --is-linux --sku S1
+$ az webapp create --resource-group MyWebApp1 --plan MyWebApp1Plan --name webappcontainerdemo001 --container-image-name mywebapp1acr.azurecr.io/webappdocker:latest
+
+$ az acr credential show --name mywebapp1acr --query username -o tsv
+>>> mywebapp1acr
+
+$ az acr credential show --name mywebapp1acr --query "passwords[0].value" -o tsv
+>>> xEZO7g1Obcwj3lGsN/Lsy3z76j58i+GJBkHlEfp+1f+ACRCJPNQ+
+
+$ az webapp config container set --name webappcontainerdemo001 --resource-group MyWebApp1 --container-registry-url https://mywebapp1acr.azurecr.io --container-registry-user mywebapp1acr --container-registry-password xEZO7g1Obcwj3lGsN/Lsy3z76j58i+GJBkHlEfp+1f+ACRCJPNQ+
+$ az webapp browse --resource-group MyWebApp1 --name webappcontainerdemo001
+```
+
+![alt text](./003/launching.png)
+![alt text](./003/app-logs.png)
+![alt text](./003/web-running.png)
