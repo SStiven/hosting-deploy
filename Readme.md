@@ -148,17 +148,23 @@ We use S1 to enable SSD usage, otherwise, this process will be very slow.
 ```bash
 $ >az appservice plan create --resource-group MyWebApp1 --name MyWebApp1Plan --is-linux --sku S1
 $ az webapp create --resource-group MyWebApp1 --plan MyWebApp1Plan --name webappcontainerdemo001 --container-image-name mywebapp1acr.azurecr.io/webappdocker:latest
+```
 
+For avoiding the 'push declined due to repository rule violations' remove part of the commands, but in the screenshots can be noticed
+
+![alt text](./003/launching.png)
+
+```bash
 $ az acr credential show --name mywebapp1acr --query username -o tsv
 >>> _____________________
 
 $ az acr credential show --name mywebapp1acr --query "passwords[0].value" -o tsv
 >>> _____________________
 
-$ az webapp config container set --name webappcontainerdemo001 --resource-group MyWebApp1 --container-registry-url https://mywebapp1acr.azurecr.io --container-registry-user _____________________ --container-registry-password _____________________
+$ az webapp config container set --name webappcontainerdemo001 --resource-group MyWebApp1 --container-registry-url https://mywebapp1acr.azurecr.io --container-registry-XXXXX _____________________ --container-registry-XXX _____________________
 $ az webapp browse --resource-group MyWebApp1 --name webappcontainerdemo001
 ```
 
-![alt text](./003/launching.png)
+
 ![alt text](./003/app-logs.png)
 ![alt text](./003/web-running.png)
