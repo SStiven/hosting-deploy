@@ -99,7 +99,7 @@ $ az webapp browse --resource-group WebApp1 --name webapp112345667
 
 ![alt text](./002.2-deploy-azure-cli/203-end.png)
 
-## 3 Via Azure CLI
+## 3 Docker
 
 We will be using the following Dockerfile
 
